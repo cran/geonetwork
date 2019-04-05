@@ -1,0 +1,14 @@
+8ba591dd9d3c554521be222a712b73aa *DESCRIPTION
+783b7e40cdfb4a1344d15b1f7081af66 *LICENSE
+8b33d3c8906924005b588a8d5abf342f *NAMESPACE
+8cc4d8d4273979a5922f8f9eb3757f3a *NEWS.md
+f3e8c37b3a9365d000831475769702b6 *R/data.R
+194819d9f979ee52ee01a0b2c6a31625 *R/geonetwork.R
+e6a1a8aaa73673ef1a7cdf1d7da996f5 *R/plot.R
+825780b9a62aed516da3dee0f60b9032 *R/st_methods.R
+fa788d51a673d6fcade2a18cd284c848 *README.md
+8fcc6f0d91738a6accd5f23dcd53379c *data/eurodist.rda
+bf2c31e5151ac235fa873bf647aae7cf *man/eurodist.Rd
+7a104ee786554c83a42d5b4794a27d9d *man/figures/README-plotting-1.png
+736a15406a020a9cd20029870ddb82f2 *man/geonetwork.Rd
+aea09840b364a211a6b2baa1d6650175 *man/plot.geonetwork.Rd
