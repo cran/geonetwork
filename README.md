@@ -1,44 +1,53 @@
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/geonetwork)](https://cran.r-project.org/package=geonetwork)
+[![r-universe](https://cirad-astre.r-universe.dev/badges/geonetwork)](https://cirad-astre.r-universe.dev/)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-geonetwork
-==========
 
-Classes and methods for handling networks or graphs whose nodes are geographical (i.e. locations in the globe). Create, transform, plot.
+# geonetwork
 
-Installation
-------------
+Classes and methods for handling networks or graphs whose nodes are
+geographical (i.e. locations in the globe). Create, transform, plot.
 
-<!-- You can install the released version of geonetwork from [CRAN](https://CRAN.R-project.org) with: -->
-<!-- ``` r -->
-<!-- install.packages("geonetwork") -->
-<!-- ``` -->
-`geonetwork` is in development. You can install the current version from GitHub with:
+## Installation
+
+You can install the released version of `geonetwork` from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-remotes::install_github("famuvie/geonetwork")
+install.packages("geonetwork")
 ```
 
-Example
--------
+Alternatively, install the latest development version with:
+
+``` r
+install.packages("geonetwork", repos = 'https://cirad-astre.r-universe.dev')
+```
+
+## Example
 
 ### Creation
 
-A `geonetwork` is an object of class `igraph` whose nodes have *geospatial* attributes (i.e. coordinates and CRS).
+A `geonetwork` is an object of class `igraph` whose nodes have
+*geospatial* attributes (i.e. coordinates and CRS).
 
-Consider the distances (in km) between 21 cities in Europe from the `datasets` package. A simple way of constructing a `geonetwork` is by combining a data.frame of `nodes` with one of `edges`:
+Consider the distances (in km) between 21 cities in Europe from the
+`datasets` package. A simple way of constructing a `geonetwork` is by
+combining a data.frame of `nodes` with one of `edges`:
 
 ``` r
-cities <- cbind(
-  city = labels(datasets::eurodist),
-  ggmap::geocode(labels(datasets::eurodist), source = "dsk")
+## Use OpenStreetMap's Nominatim service through the package {tmaptools}
+## to retrieve coordinates of the cities.
+## Restrict search to Europe (to prevent homonym cities to show up)
+cities <- tmaptools::geocode_OSM(
+  paste(
+    labels(datasets::eurodist),
+    "viewbox=-31.64063%2C60.93043%2C93.16406%2C31.65338",
+    sep = "&"
+  )
 )
-
-## ggmap can either use Google Maps Api (which requires registration
-## with credit card and offers limited amount of queries) of 
-## Data Science Toolkit (DSK) whose service is being shut-down.
-## 
-## Alternatively, uses OpenStreetMap Nominatim service
-# tmaptools::geocode_OSM(labels(datasets::eurodist))
+cities$city <- labels(datasets::eurodist)
 
 distances <- 
   expand.grid(
@@ -54,28 +63,40 @@ distances <-
   )
 
 str(cities)
-#> 'data.frame':    21 obs. of  3 variables:
-#>  $ city: Factor w/ 21 levels "Athens","Barcelona",..: 1 2 3 4 5 6 7 8 9 10 ...
-#>  $ lon : num  23.72 2.16 4.35 1.85 -1.62 ...
-#>  $ lat : num  38 41.4 50.9 51 49.6 ...
+#> 'data.frame':    21 obs. of  8 variables:
+#>  $ query  : chr  "Athens&viewbox=-31.64063%2C60.93043%2C93.16406%2C31.65338" "Barcelona&viewbox=-31.64063%2C60.93043%2C93.16406%2C31.65338" "Brussels&viewbox=-31.64063%2C60.93043%2C93.16406%2C31.65338" "Calais&viewbox=-31.64063%2C60.93043%2C93.16406%2C31.65338" ...
+#>  $ lat    : num  38 41.4 50.8 51 49.5 ...
+#>  $ lon    : num  23.73 2.18 4.35 1.85 -1.58 ...
+#>  $ lat_min: num  37.8 41.3 50.7 50.9 49.3 ...
+#>  $ lat_max: num  38.1 41.5 51 51 49.7 ...
+#>  $ lon_min: num  23.57 2.05 4.19 1.81 -1.96 ...
+#>  $ lon_max: num  23.89 2.23 4.51 1.93 -1.14 ...
+#>  $ city   : chr  "Athens" "Barcelona" "Brussels" "Calais" ...
 str(distances)
 #> 'data.frame':    210 obs. of  3 variables:
 #>  $ origin  : chr  "Barcelona" "Brussels" "Calais" "Cherbourg" ...
 #>  $ destin  : chr  "Athens" "Athens" "Athens" "Athens" ...
 #>  $ distance: num  3313 2963 3175 3339 2762 ...
 
-eurodist <- geonetwork(distances, nodes = cities, directed = FALSE)
+eurodist <- geonetwork(
+  distances,
+  nodes = cities[, c("city", "lon", "lat")], 
+  directed = FALSE
+)
 ```
 
 Several assumptions were made here unless otherwise specified:
 
--   The first column in `cities` was matched with the first two columns in `distances`.
+-   The first column in `cities` was matched with the first two columns
+    in `distances`.
 
--   The second and third columns in `cities` were assumed to be longitude and latitude in decimal degrees in a WGS84 CRS.
+-   The second and third columns in `cities` were assumed to be
+    longitude and latitude in decimal degrees in a WGS84 CRS.
 
 -   The remaining column in `distances` was treated as an edge *weight*.
 
-Now we can readily plot the network, optionally with some additional geographical layer for context:
+Now we can readily plot the network, optionally with some additional
+geographical layer for context:
 
 ``` r
 ## Base system
@@ -85,21 +106,3 @@ plot(eurodist, axes = TRUE, add = TRUE)
 ```
 
 <img src="man/figures/README-plotting-1.png" width="100%" />
-
-``` r
-
-# bgm <- ggmap::get_stamenmap(bbox = unname(sf::st_bbox(eurodist)),
-# zoom = 5, maptype = "watercolor") plot(st_transform(eurodist, 3857),
-# bgMap = bgm)
-
-## tmap
-
-## mapview
-
-## ggplot2
-
-# library(ggplot2)
-# ggplot() +
-#   geom_sf(eurod_net_dummy) +
-#   geom_sf(spData::world)
-```

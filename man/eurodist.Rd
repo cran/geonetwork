@@ -4,7 +4,9 @@
 \name{eurodist}
 \alias{eurodist}
 \title{Distances between 21 European cities}
-\format{\code{geonetwork}.}
+\format{
+\code{geonetwork}.
+}
 \source{
 Distances (in km) between 21 European cities are taken
   from \code{\link[datasets]{eurodist}}. Coordinates of the cities

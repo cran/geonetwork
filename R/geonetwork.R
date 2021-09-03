@@ -24,6 +24,7 @@
 #' @export
 #' @import igraph
 #' @import sf
+#' @import methods
 #' @importFrom sp CRS
 #' @importFrom rgdal CRSargs
 #' @examples

@@ -4,8 +4,7 @@
 \alias{geonetwork}
 \title{Create geographic networks}
 \usage{
-geonetwork(edges, nodes, directed = TRUE,
-  CRS = sp::CRS("+proj=longlat"))
+geonetwork(edges, nodes, directed = TRUE, CRS = sp::CRS("+proj=longlat"))
 }
 \arguments{
 \item{edges}{data.frame. Edges list and attributes. See Details.}
