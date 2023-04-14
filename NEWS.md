@@ -1,3 +1,10 @@
+# geonetwork 0.5
+
+* Remove dependencies on packages in process of deprecation (sp, rgdal)
+
+* CRAN release
+
+
 # geonetwork 0.4
 
 * Readme example: geocode with OSM Nominatim rather than DSK (off-service)
@@ -5,6 +12,7 @@
 * Install from r-universe.
 
 * Update metadata after moving from GitHub to Forgemia.
+
 
 * CRAN release
 

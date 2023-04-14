@@ -16,22 +16,21 @@
 #' @param edges data.frame. Edges list and attributes. See Details.
 #' @param nodes data.frame. Nodes list and attributes. See Details.
 #' @param directed logical. Default is to build a directed graph.
-#' @param CRS CRS object. Coordinate Reference System, as built by
-#'   function \code{\link[rgdal]{CRS}}.
+#' @param CRS Coordinate Reference System, as a numeric or character code, an
+#' object of class [sf::sf] or [sf::sfc], or a `src`
+#' object as built by
+#'   function [sf::st_crs].
 #'
 #' @return An object of class \code{geonetwork}, which also inherits
 #' from \code{igraph}.
 #' @export
 #' @import igraph
 #' @import sf
-#' @import methods
-#' @importFrom sp CRS
-#' @importFrom rgdal CRSargs
 #' @examples
 #'   e <- data.frame(from = c("A", "A"), to = c("B", "C"))
 #'   n <- data.frame(id = LETTERS[1:3], x = c(0, 0, 1), y = c(0, 1, 0))
 #'   geonetwork(e, n)
-geonetwork <- function(edges, nodes, directed = TRUE, CRS = sp::CRS("+proj=longlat")) {
+geonetwork <- function(edges, nodes, directed = TRUE, CRS = 4326) {
 
   stopifnot(
     ## numeric coordinates
@@ -47,7 +46,7 @@ geonetwork <- function(edges, nodes, directed = TRUE, CRS = sp::CRS("+proj=longl
   sfc <- st_cast(
     sf::st_sfc(
       sf::st_multipoint(coords, dim = "XY"),
-      crs = rgdal::CRSargs(CRS)
+      crs = sf::st_crs(CRS)
     ),
     "POINT"
   )

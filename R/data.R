@@ -6,5 +6,5 @@
 #' @format \code{geonetwork}.
 #' @source Distances (in km) between 21 European cities are taken
 #'   from \code{\link[datasets]{eurodist}}. Coordinates of the cities
-#'   were obtained with \code{\link[ggmap]{geocode}}.
+#'   were obtained with \code{\link[tmaptools]{geocode_OSM}}.
 "eurodist"

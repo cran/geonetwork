@@ -4,7 +4,7 @@
 \alias{geonetwork}
 \title{Create geographic networks}
 \usage{
-geonetwork(edges, nodes, directed = TRUE, CRS = sp::CRS("+proj=longlat"))
+geonetwork(edges, nodes, directed = TRUE, CRS = 4326)
 }
 \arguments{
 \item{edges}{data.frame. Edges list and attributes. See Details.}
@@ -13,8 +13,10 @@ geonetwork(edges, nodes, directed = TRUE, CRS = sp::CRS("+proj=longlat"))
 
 \item{directed}{logical. Default is to build a directed graph.}
 
-\item{CRS}{CRS object. Coordinate Reference System, as built by
-function \code{\link[rgdal]{CRS}}.}
+\item{CRS}{Coordinate Reference System, as a numeric or character code, an
+object of class [sf::sf] or [sf::sfc], or a `src`
+object as built by
+  function [sf::st_crs].}
 }
 \value{
 An object of class \code{geonetwork}, which also inherits
